@@ -1,11 +1,8 @@
 using Printf
-max_iter = 0;
-max_omega = 0.0;
-min_iter = 1000000;
-min_omega = 0.0;
+using Random;
 
 function sor(n::Int64, A::Array, b::Array, omega::Float64)
-	epsilon = 1e-5;
+	epsilon = 1e-8;
 	iter = 0;
 	is_convergence = false;
 	x = zeros(Float64, n);
@@ -27,7 +24,7 @@ function sor(n::Int64, A::Array, b::Array, omega::Float64)
 			err[i] = abs(x[i] - pre_x);
 		end
 		for i = 1:n
-			if err[i] > epsilon
+			if err[i] > epsilon && iter < 100000
 				is_convergence = false
 				break;
 			end
@@ -35,13 +32,6 @@ function sor(n::Int64, A::Array, b::Array, omega::Float64)
 		iter += 1;
 	end
 	@printf("iter = %d\n", iter);
-	if iter > max_iter
-		global max_iter = iter;
-		global max_omega = omega;
-	elseif iter < min_iter
-		global min_iter = iter;
-		global min_omega = omega;
-	end
 	return x;
 end
 
@@ -60,24 +50,25 @@ function pivot(size, row, A, b)
 end
 
 function main()
-	A = [
-	     1 1 0;
-	     2 2 2;
-	     0 3 3
-	 ];
-	b = [
-	     1;
-	     2;
-	     3
-	];
-	n = length(b);
-	for omega = range(0.1, stop=1.99, length=1000)
-		@printf("omega = %.5f\n", omega);
-		x = sor(n, A, b, omega);
-	println();
+	n = 4;
+	omega = 1.0;
+	A = rand(Int8, (n, n));;
+	b = rand(Int16, n);;
+	for j = 1:n
+		for i = 1:n
+			if A[j, i] < 0
+				@printf("%d x%d ", A[j, i], i);
+			else
+				@printf("+ %d x%d ", A[j, i], i);
+			end
+		end
+		@printf(" = %d\n", b[j]);
 	end
-	@printf("omega : %.5f, max iteration = %d\n", max_omega, max_iter);
-	@printf("omega : %.5f, min iteration = %d\n", min_omega, min_iter);
+	@time x = sor(n, A, b, omega);
+	println();
+	for i = 1:n
+		@printf("\t\t\tx%d = %.7f\n", i, x[i]);	
+	end
  end
 
  main()
