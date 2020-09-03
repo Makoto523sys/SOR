@@ -52,8 +52,8 @@ end
 function main()
 	n = 4;
 	omega = 1.0;
-	A = rand(Int8, (n, n));;
-	b = rand(Int16, n);;
+	A = rand(Int8, (n, n));
+	b = rand(Int16, n);
 	for j = 1:n
 		for i = 1:n
 			if A[j, i] < 0
