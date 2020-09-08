@@ -15,7 +15,7 @@ void pivot(const int row, std::vector<std::vector<double>>& A, std::vector<doubl
 /******************************************
  * sor method for linear problem
  * when you use this method,
- * osr(std::vector<std::vector<double>>& coefficient_matrix, std::vector<double>& X, std::vector<double>& b)
+ * (std::vector<std::vector<double>>& coefficient_matrix, std::vector<double>& X, std::vector<double>& b)
  ******************************************/
 inline void sor(std::vector<std::vector<double>>& A, std::vector<double>& x, std::vector<double>&  b, const double omega){
 	unsigned int iter = 0;
